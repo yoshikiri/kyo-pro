@@ -1,101 +1,105 @@
+// 23:40 - 24:01
+
 #include <iostream>
 
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
 
-struct node {
-  int data;
-  node *left;
-  node *right;
+struct Node {
+  int value;
+  Node *prev;
+  Node *next;
 };
 
-node root{0, 0, 0};
+Node *root;
 
-void insert(int x) {
-  node newNode{x, 0, 0};
-
-  newNode.right = root.right;
-  root.right->left = &newNode;
-  root.right = &newNode;
-  newNode.left = &root;
-
-  // if (root.right == 0) {
-  //   newNode.right = 0;
-  //   root.right = &newNode;
-  // } else {
-  //   newNode.right = root.right;
-  //   (root.right)->left = &newNode;
-  //   root.right = &newNode;
-  // }
+void insertNode(int key) {
+  Node *node = new Node{key, root, root->next};
+  root->next->prev = node;
+  root->next = node;
 }
 
-void deleteNode(int x, node *n) {
-  if (n->data == x) {
-    (n->left)->right = n->right;
-    (n->right)->left = n->left;
-    n->left = 0;
-    n->right = 0;
-    return;
-  }
+Node *searchNode(int key, Node *node) {
+  Node *t = node->next;
+  if (t == root)
+    return nullptr;
 
-  if (n->right == 0)
+  if (t->value == key)
+    return t;
+
+  return searchNode(key, t);
+}
+
+void deleteNode(int key) {
+  Node *node = searchNode(key, root);
+  if (node == nullptr)
     return;
 
-  deleteNode(x, n->right);
+  node->prev->next = node->next;
+  node->next->prev = node->prev;
+
+  delete node;
 }
 
 void deleteFirst() {
-  root.right = (root.right)->right;
-  (root.right)->left = &root;
+  Node *t = root->next;
+  t->next->prev = root;
+  root->next = t->next;
+
+  delete t;
 }
 
-void deleteLast(node *n) {
-  if (n->right == 0) {
-    (n->left)->right = 0;
-    n->left = 0;
+void deleteLast() {
+  Node *t = root->prev;
+  t->prev->next = root;
+  t->next->prev = t->prev;
+
+  delete t;
+}
+
+void printList(Node *node) {
+  Node *t = node->next;
+
+  if (t == root) {
     return;
   }
-  deleteLast(n->right);
-}
 
-void printNode(node *n) {
-  std::cout << (n->data);
-
-  if (n->right == &root) {
-    // std::cout << "n->right == 0" << '\n';
+  std::cout << t->value;
+  if (t->next == root) {
     std::cout << '\n';
   } else {
-    // std::cout << "n->right != 0" << '\n';
     std::cout << ' ';
-    printNode(n->right);
+    printList(t);
   }
 }
 
 int main() {
   int n;
   std::cin >> n;
+
+  root = new Node();
+  root->value = 0;
+  root->prev = root;
+  root->next = root;
+
   std::string com;
   int key;
-
-  root.left = &root;
-  root.right = &root;
 
   rep(i, n) {
     std::cin >> com;
     if (com == "insert") {
       std::cin >> key;
-      // std::cout << com << '\n';
-      insert(key);
+      insertNode(key);
     } else if (com == "delete") {
       std::cin >> key;
-      deleteNode(key, root.right);
+      deleteNode(key);
     } else if (com == "deleteFirst") {
       deleteFirst();
     } else if (com == "deleteLast") {
-      deleteLast(root.right);
+      deleteLast();
     }
   }
 
-  printNode(root.right);
+  printList(root);
 
   return 0;
 }
