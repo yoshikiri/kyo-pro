@@ -27,7 +27,6 @@ int main() {
   for (int l = 2; l < n + 1; ++l) {
     for (int i = 1; i <= n - l + 1; ++i) {
       int j = i + l - 1;
-
       m[i][j] = 1 << 21;
       for (int k = i; k < j; ++k) {
         m[i][j] =
