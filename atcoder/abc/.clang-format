@@ -2,6 +2,6 @@ BasedOnStyle: LLVM
 Language: Cpp
 AlignOperands: true
 AlignTrailingComments: true
-AllowShortBlocksOnASingleLine: SIS_WithoutElse
+# AllowShortBlocksOnASingleLine: SIS_WithoutElse
 AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: true
