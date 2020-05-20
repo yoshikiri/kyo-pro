@@ -1,4 +1,6 @@
+#include <algorithm>
 #include <iostream>
+#include <set>
 #include <vector>
 
 using namespace std;
@@ -14,19 +16,34 @@ int main() {
   int nq;
   cin >> nq;
 
-  vector<int> vs(s.length());
-  rep(i, s.length()) { vs[i] = s[i] - 'a'; }
+  vector<set<int>> al(26);
+  rep(i, n) { al[s[i] - 'a'].insert(i); }
 
-  rep(i, nq) {
+  rep(qi, nq) {
     int q;
     cin >> q;
     if (q == 1) {
-      int i, c;
+      int i;
+      char c;
       cin >> i >> c;
-      s[--i] = c;
+      --i;
+      al[s[i] - 'a'].erase(i);
+      s[i] = c;
+      al[c - 'a'].insert(i);
     } else {
       int l, r;
       cin >> l >> r;
+      --l, --r;
+      int ans = 0;
+      rep(i, 26) {
+        auto it = al[i].lower_bound(l);
+        if (it != al[i].end() && *it <= r) ++ans;
+      }
+      // for (auto a : al) {
+      //   auto idx = a.lower_bound(l);
+      //   if (idx != a.end() && *idx <= r) ++ans;
+      // }
+      printf("%d\n", ans);
     }
   }
   return 0;
