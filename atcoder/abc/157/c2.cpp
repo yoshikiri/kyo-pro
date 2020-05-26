@@ -1,53 +1,37 @@
-#include <algorithm>
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 using ll = long long;
-using P = pair<int, int>;
 
 #define rep(i, n) for (int i = 0; i < (int)(n); ++i)
 
 int main() {
   int n, m;
   cin >> n >> m;
-
-  vector<P> p;
-
-  rep(i, m) {
-    int s, c;
-    cin >> s >> c;
-    --s;
-    p.push_back({s, c});
-  }
+  int s[m], c[m];
+  rep(i, m) cin >> s[i] >> c[i];
 
   rep(i, 1000) {
-    int x = i / 10;
-    vector<int> d{i % 10};
-    while (x > 0) {
-      d.push_back(x % 10);
-      x /= 10;
-    }
+    string str = to_string(i);
 
-    reverse(d.begin(), d.end());
-
-    if (d.size() != n) continue;
-
-    bool ok = true;
+    bool now = true;
     rep(j, m) {
-      if (d[p[j].first] != p[j].second) ok = false;
+      int p = s[j] - 1, q = c[j];
+      if (str[p] != q + '0') {
+        now = false;
+        continue;
+      }
     }
 
-    if (ok) {
-      for (int v : d) {
-        cout << v;
-      }
-      cout << '\n';
+    if (str.size() != n) continue;
+
+    if (now) {
+      cout << i << endl;
       return 0;
     }
   }
 
-  cout << -1 << '\n';
+  cout << -1 << endl;
 
   return 0;
 }
