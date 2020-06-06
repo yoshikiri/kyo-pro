@@ -5,3 +5,4 @@ AlignTrailingComments: true
 # AllowShortBlocksOnASingleLine: SIS_WithoutElse
 AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: true
+AllowShortBlocksOnASingleLine: false

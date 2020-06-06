@@ -15,7 +15,7 @@ int main() {
   rep(i, n) { mp[a[i]]++; }
 
   ll sum = 0;
-  for (auto p : mp) { sum += p.second * (p.second - 1) / 2; }
+  for (auto p : mp) sum += p.second * (p.second - 1) / 2;
 
   rep(k, n) { std::cout << sum - (mp[a[k]] - 1) << '\n'; }
   return 0;
