@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/home/momori/work/kyo-pro/cpp_cmake/build",
-  "command": "/usr/bin/x86_64-linux-gnu-g++-7    -g   -o CMakeFiles/cpp_make.dir/main.cpp.o -c /home/momori/work/kyo-pro/cpp_cmake/main.cpp",
-  "file": "/home/momori/work/kyo-pro/cpp_cmake/main.cpp"
-}
-]
