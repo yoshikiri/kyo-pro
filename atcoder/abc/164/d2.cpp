@@ -1,28 +1,31 @@
-#include <iostream>
+#include <bits/stdc++.h>
+
+using namespace std;
+using ll = long long;
 
 #define rep(i, n) for (int i = 0; i < (int)(n); ++i)
 
+const int mod = 2019;
+
 int main() {
-  std::string s;
-  std::cin >> s;
+  string s;
+  cin >> s;
+  int n = s.size();
+  reverse(s.begin(), s.end());
 
-  int n = s.length();
-
-  int cnt[2019] = {0};
-  cnt[0] = 1;
-  int acc = 0, mult = 1;
-  for (int i = n - 1; i >= 0; --i) {
-    acc += (s[i] - '0') * mult;
-    acc %= 2019;
-    mult *= 10;
-    mult %= 2019;
-    cnt[acc]++;
+  vector<int> a(n + 1);
+  int mul = 1;
+  rep(i, n) {
+    int x = s[i] - '0';
+    x = x * mul % mod;
+    a[i + 1] = (a[i] + x) % mod;
+    mul = mul * 10 % mod;
   }
 
-  int sum = 0;
-  rep(i, 2019) { sum += cnt[i] * (cnt[i] - 1) / 2; }
-
-  std::cout << sum << '\n';
-
+  vector<int> cnt(mod);
+  rep(i, n + 1)++ cnt[a[i]];
+  ll ans = 0;
+  rep(i, 2019) { ans += (ll)cnt[i] * (cnt[i] - 1) / 2; }
+  cout << ans << endl;
   return 0;
 }
