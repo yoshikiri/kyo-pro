@@ -11,17 +11,16 @@ int main() {
   int a[n];
   rep(i, n) cin >> a[i];
 
-  deque<int> r;
+  ll sum = 0;
   rep(i, n) {
-    int idx = lower_bound(r.begin(), r.end(), a[i]) - r.begin();
-    --idx;
-    if (idx < 0) {
-      r.push_front(a[i]);
-    } else {
-      r[idx] = a[i];
-    }
+    if (i & 1)
+      sum -= a[i];
+    else
+      sum += a[i];
   }
-
-  cout << r.size() << endl;
+  ll ans[n];
+  ans[0] = sum;
+  rep(i, n) ans[i + 1] = 2 * a[i] - ans[i];
+  rep(i, n) cout << ans[i] << endl;
   return 0;
 }
