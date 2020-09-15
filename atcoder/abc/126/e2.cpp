@@ -1,47 +1,46 @@
-#include <algorithm>
-#include <iostream>
-#include <set>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 using ll = long long;
 
 #define rep(i, n) for (int i = 0; i < (int)(n); ++i)
 
-void assignGroup(int u, int *group, int g, vector<vector<int>> &t) {
-  if (group[u] != -1) return;
-  group[u] = g;
-  for (auto v : t[u]) { assignGroup(v, group, g, t); }
-}
+struct UnionFind {
+  vector<int> p;
+  UnionFind(int n) : p(n, -1) {}
+
+  bool unite(int x, int y) {
+    x = find(x);
+    y = find(y);
+    if (x == y) return false;
+    if (-p[x] < -p[y]) swap(x, y);
+    p[x] += p[y];
+    p[y] = x;
+    return true;
+  }
+
+  int find(int x) {
+    if (p[x] < 0) return x;
+    return p[x] = find(p[x]);
+  }
+
+  int same(int x, int y) { return find(x) == find(y); }
+  int size(int x) { return -p[find(x)]; }
+};
 
 int main() {
   int n, m;
   cin >> n >> m;
-
-  vector<vector<int>> t(n);
+  UnionFind uf(n);
   rep(i, m) {
     int x, y, z;
     cin >> x >> y >> z;
-    --x;
-    --y;
-    t[x].push_back(y);
-    t[y].push_back(x);
-  }
-
-  int g = 0;
-  int group[n];
-  rep(i, n) group[i] = -1;
-  rep(i, n) {
-    if (group[i] == -1) {
-      assignGroup(i, group, g, t);
-      ++g;
-    }
+    --x, --y;
+    uf.unite(x, y);
   }
 
   set<int> s;
-  rep(i, n) { s.insert(group[i]); }
-
-  cout << s.size() << '\n';
-
+  rep(i, n) s.insert(uf.find(i));
+  cout << s.size() << endl;
   return 0;
 }
