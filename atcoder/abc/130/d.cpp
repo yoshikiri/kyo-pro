@@ -9,26 +9,21 @@ int main() {
   int n;
   ll k;
   cin >> n >> k;
-
   int a[n];
   rep(i, n) cin >> a[i];
 
-  ll ans = 0, sum = 0;
   int r = 0;
-  for (int l = 0; l < n; ++l) {
-    while (sum < k) {
-      if (r >= n) break;
+  ll sum = 0;
+  ll ans = 0;
+  rep(l, n) {
+    while (sum < k && r < n) {
       sum += a[r];
       ++r;
     }
-
     if (sum < k) break;
-
     ans += n - r + 1;
     sum -= a[l];
   }
-
   cout << ans << endl;
-
   return 0;
 }
