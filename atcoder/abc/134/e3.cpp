@@ -11,7 +11,6 @@ int main() {
   cin >> n;
   int a[n];
   rep(i, n) cin >> a[i];
-
   multiset<int> s;
   rep(i, n) {
     auto it = s.lower_bound(a[i]);
@@ -19,16 +18,5 @@ int main() {
     s.insert(a[i]);
   }
   cout << s.size() << endl;
-
-  // deque<int> d;
-  // rep(i, n) {
-  //   int p = lower_bound(d.begin(), d.end(), a[i]) - d.begin();
-  //   if (p == 0) {
-  //     d.push_front(a[i]);
-  //   } else {
-  //     d[p - 1] = a[i];
-  //   }
-  // }
-  // cout << d.size() << endl;
   return 0;
 }
