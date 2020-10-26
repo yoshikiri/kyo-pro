@@ -9,30 +9,32 @@ int main() {
   string s;
   cin >> s;
   int n = s.size();
-
-  vector<int> ans(n);
-  int cnt = 0;
-  rep(c, 2) {
-    rep(i, n) {
-      if (s[i] == 'R')
-        ++cnt;
-      else {
-        ans[i] += cnt / 2;
-        ans[i - 1] += (cnt + 1) / 2;
-        cnt = 0;
-      }
-    }
-
-    reverse(s.begin(), s.end());
-    reverse(ans.begin(), ans.end());
-    rep(i, n) {
-      if (s[i] == 'L')
-        s[i] = 'R';
-      else
-        s[i] = 'L';
+  vector<int> r;
+  rep(i, n - 1) {
+    if (s[i] == 'R' && s[i + 1] == 'L') {
+      r.push_back(i);
     }
   }
 
-  rep(i, n) printf("%d%c", ans[i], i == n - 1 ? '\n' : ' ');
+  vector<int> ans(n);
+  rep(i, n) {
+    int idx;
+    if (s[i] == 'R')
+      idx = *lower_bound(r.begin(), r.end(), i);
+    else
+      idx = *(lower_bound(r.begin(), r.end(), i) - 1) + 1;
+    int d = abs(i - idx);
+    if (d % 2 == 0) {
+      ++ans[idx];
+    } else {
+      if (s[i] == 'R')
+        ++idx;
+      else
+        --idx;
+      ++ans[idx];
+    }
+  }
+
+  rep(i, n) printf("%d%c", ans[i], (i == n - 1 ? '\n' : ' '));
   return 0;
 }
