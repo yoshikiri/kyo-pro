@@ -1,6 +1,4 @@
-#include <algorithm>
-#include <iostream>
-#include <queue>
+#include <bits/stdc++.h>
 
 using namespace std;
 using ll = long long;
@@ -11,31 +9,21 @@ using P = pair<int, int>;
 int main() {
   int n, m;
   cin >> n >> m;
+  vector<P> v(n);
+  rep(i, n) cin >> v[i].first >> v[i].second;
+  sort(v.begin(), v.end());
 
-  vector<P> arb(n);
-  rep(i, n) {
-    int a, b;
-    cin >> a >> b;
-    arb[i] = make_pair(a, b);
-  }
-
-  sort(arb.begin(), arb.end());
-
-  int ans = 0;
-  priority_queue<P> pq;
-  int k = 0;
+  int ans = 0, cur = 0;
+  priority_queue<int> pq;
   for (int i = 1; i <= m; ++i) {
-    while (arb[k].first <= i) {
-      pq.push(make_pair(arb[k].second, arb[k].first));
-      ++k;
+    while (cur < n && v[cur].first <= i) {
+      pq.push(v[cur].second);
+      ++cur;
     }
-
     if (pq.empty()) continue;
-
-    ans += pq.top().first;
+    ans += pq.top();
     pq.pop();
   }
-
   cout << ans << endl;
   return 0;
 }
