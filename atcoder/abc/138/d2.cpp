@@ -5,20 +5,11 @@ using ll = long long;
 
 #define rep(i, n) for (int i = 0; i < (int)(n); ++i)
 
-vector<int> to[200005];
-vector<int> ans;
-
-void dfs(int u, int p = -1) {
-  for (auto v : to[u]) {
-    if (v == p) continue;
-    ans[v] += ans[u];
-    dfs(v, u);
-  }
-}
-
 int main() {
-  int n, q;
-  cin >> n >> q;
+  int n, nq;
+  cin >> n >> nq;
+
+  vector<int> to[n];
   rep(i, n - 1) {
     int a, b;
     cin >> a >> b;
@@ -27,16 +18,29 @@ int main() {
     to[b].push_back(a);
   }
 
-  ans.resize(n);
-
-  rep(i, q) {
+  vector<int> add(n);
+  rep(i, nq) {
     int p, x;
     cin >> p >> x;
     --p;
-    ans[p] += x;
+    add[p] += x;
   }
 
-  dfs(0);
-  rep(i, n) cout << ans[i] << endl;
+  vector<int> ans(n, -1);
+
+  queue<int> q;
+  q.push(0);
+  while (!q.empty()) {
+    int u = q.front();
+    q.pop();
+    ans[u] = add[u];
+    for (auto v : to[u]) {
+      if (ans[v] != -1) continue;
+      add[v] += add[u];
+      q.push(v);
+    }
+  }
+
+  rep(i, n) printf("%d%c", ans[i], i == n - 1 ? '\n' : ' ');
   return 0;
 }
